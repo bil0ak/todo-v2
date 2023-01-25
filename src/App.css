@@ -1,3 +1,10 @@
+:root {
+  /* Dark theme */
+  --primary-color: #282c30;
+  --secondary-color: #ccc;
+  --text-color: #fff;
+}
+
 .App {
   text-align: center;
 }
