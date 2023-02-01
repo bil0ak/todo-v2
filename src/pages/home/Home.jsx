@@ -125,21 +125,23 @@ export default function Home() {
                   <p className="todo_item_date">
                     {new Date(item.date).toLocaleString()}
                   </p>
-                  <button
-                    onClick={(e) =>
-                      handleUpdateBtnClick(e, item.id, item.title)
-                    }
-                    className="todo_item_update"
-                  >
-                    <i className="fa fa-edit"></i>
-                  </button>
+                  <div className="todo_item_functions">
+                    <button
+                      onClick={(e) =>
+                        handleUpdateBtnClick(e, item.id, item.title)
+                      }
+                      className="todo_item_update"
+                    >
+                      <i className="fa fa-edit"></i>
+                    </button>
 
-                  <button
-                    onClick={(e) => handleDeleteBtnClick(e, item.id)}
-                    className="todo_item_delete"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      onClick={(e) => handleDeleteBtnClick(e, item.id)}
+                      className="todo_item_delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </li>
               ))}
           </ul>
