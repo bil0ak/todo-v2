@@ -8,6 +8,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -51,5 +52,16 @@ export function removeTodo(userId, TodoID) {
     console.log("Document removed successfully");
   } catch (e) {
     console.error("Error removing document: ", e);
+  }
+}
+
+export function updateTodo(userId, TodoID, todo) {
+  try {
+    const docRef = updateDoc(doc(db, "users/" + userId + "/todos", TodoID), {
+      title: todo,
+    });
+    console.log("Document updated successfully");
+  } catch (e) {
+    console.error("Error updating document: ", e);
   }
 }

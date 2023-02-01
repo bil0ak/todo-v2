@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { app, removeTodo } from "../../config/firebase-config";
+import { app, removeTodo, updateTodo } from "../../config/firebase-config";
 import { writeTodoData } from "../../config/firebase-config";
 import {
   collection,
@@ -56,6 +56,14 @@ export default function Home() {
     let confirmation = window.confirm("Are you sure you want to delete this?");
     if (confirmation) {
       removeTodo(user.uid, id);
+    }
+  };
+
+  const handleUpdateBtnClick = (e, id, title) => {
+    e.preventDefault();
+    let newTitle = window.prompt("Enter new title", title);
+    if (newTitle) {
+      updateTodo(user.uid, id, newTitle);
     }
   };
 
@@ -117,6 +125,15 @@ export default function Home() {
                   <p className="todo_item_date">
                     {new Date(item.date).toLocaleString()}
                   </p>
+                  <button
+                    onClick={(e) =>
+                      handleUpdateBtnClick(e, item.id, item.title)
+                    }
+                    className="todo_item_update"
+                  >
+                    <i className="fa fa-edit"></i>
+                  </button>
+
                   <button
                     onClick={(e) => handleDeleteBtnClick(e, item.id)}
                     className="todo_item_delete"
