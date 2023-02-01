@@ -31,13 +31,13 @@ export const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
 
-// change to firestore later
 export async function writeTodoData(userId, todo) {
   try {
     const docRef = await addDoc(collection(db, "users/" + userId + "/todos"), {
-      title: todo,
+      title: todo.title,
       completed: false,
       date: Date.now(),
+      reminderDate: todo.reminderDate,
     });
 
     console.log("Document written with ID: ", docRef.id);
@@ -59,6 +59,17 @@ export function updateTodo(userId, TodoID, todo) {
   try {
     const docRef = updateDoc(doc(db, "users/" + userId + "/todos", TodoID), {
       title: todo,
+    });
+    console.log("Document updated successfully");
+  } catch (e) {
+    console.error("Error updating document: ", e);
+  }
+}
+
+export function updateTodoStatus(userId, TodoID, status) {
+  try {
+    const docRef = updateDoc(doc(db, "users/" + userId + "/todos", TodoID), {
+      completed: status,
     });
     console.log("Document updated successfully");
   } catch (e) {

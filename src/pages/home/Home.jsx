@@ -1,7 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { app, removeTodo, updateTodo } from "../../config/firebase-config";
+import {
+  app,
+  removeTodo,
+  updateTodo,
+  updateTodoStatus,
+} from "../../config/firebase-config";
 import { writeTodoData } from "../../config/firebase-config";
 import {
   collection,
@@ -45,6 +50,9 @@ export default function Home() {
         querySnapshot.forEach((doc) => {
           data.push({ ...doc.data(), id: doc.id });
         });
+        // sort data by date in descending order
+        data.sort((a, b) => b.date - a.date);
+
         setData(data);
       });
     };
@@ -66,21 +74,37 @@ export default function Home() {
       updateTodo(user.uid, id, newTitle);
     }
   };
+  const handleTodoCheckboxClick = (e, id, completed) => {
+    e.preventDefault();
+    updateTodoStatus(user.uid, id, !completed);
+  };
 
-  const [newTodo, setNewTodo] = useState("");
+  const [newTodo, setNewTodo] = useState({
+    title: "",
+    reminderDate: null,
+  });
 
   const handleNewTodoChange = (e) => {
-    setNewTodo(e.target.value);
+    setNewTodo(
+      Object.assign({}, newTodo, {
+        title: e.target.value,
+      })
+    );
   };
 
   const handleAddBtnClick = (e) => {
     e.preventDefault();
-    if (newTodo === "") {
+    // check if object is empty
+    if (newTodo.title === "" || newTodo.title === undefined) {
       return;
     }
+
     writeTodoData(user.uid, newTodo);
     // empty input
-    setNewTodo("");
+    setNewTodo({
+      title: "",
+      reminderDate: null,
+    });
   };
 
   const handleSignOut = () => {
@@ -97,7 +121,7 @@ export default function Home() {
               <input
                 type="text"
                 onChange={(e) => handleNewTodoChange(e)}
-                value={newTodo}
+                value={newTodo.title}
                 className="add_todo_input"
                 placeholder="Add Todo"
               />
@@ -121,7 +145,23 @@ export default function Home() {
             {data &&
               data.map((item) => (
                 <li key={item.id} className="todo_item">
-                  <p className="todo_item_title">{item.title}</p>
+                  <div
+                    className="todo_item_checkbox"
+                    onClick={(e) =>
+                      handleTodoCheckboxClick(e, item.id, item.completed)
+                    }
+                  >
+                    {item.completed ? (
+                      // circle check icon
+                      <i className="fa fa-check-circle"></i>
+                    ) : (
+                      // circle icon
+                      <i className="fa fa-circle"></i>
+                    )}
+                  </div>
+                  <p className="todo_item_title">
+                    {item.completed ? <del>{item.title}</del> : item.title}
+                  </p>
                   <p className="todo_item_date">
                     {new Date(item.date).toLocaleString()}
                   </p>
