@@ -70,6 +70,7 @@ export async function getTodoData() {
 
 export function removeTodo(TodoID) {
   try {
+    // eslint-disable-next-line no-unused-vars
     const promise = databases.deleteDocument(DB_ID, COLLECTION_ID, TodoID);
     console.log("Document removed successfully");
   } catch (e) {
@@ -79,6 +80,7 @@ export function removeTodo(TodoID) {
 
 export function updateTodo(TodoID, todo) {
   try {
+    // eslint-disable-next-line no-unused-vars
     const promise = databases.updateDocument(DB_ID, COLLECTION_ID, TodoID, {
       title: todo.title,
     });
@@ -90,6 +92,7 @@ export function updateTodo(TodoID, todo) {
 
 export function updateTodoStatus(TodoID, status) {
   try {
+    // eslint-disable-next-line no-unused-vars
     const promise = databases.updateDocument(DB_ID, COLLECTION_ID, TodoID, {
       completed: status,
     });
