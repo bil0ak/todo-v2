@@ -24,6 +24,20 @@ export async function googleLogin() {
   return promise;
 }
 
+export async function magicURLLogin(email) {
+  const promise = account.createMagicURLSession(
+    "unique()",
+    email,
+    window.location.origin + "/magicURL"
+  );
+  return promise;
+}
+
+export async function magicURLLoginCallback(userId, secret) {
+  const promise = account.updateMagicURLSession(userId, secret);
+  return promise;
+}
+
 export async function getAccount() {
   const promise = account.get();
   return promise;
@@ -64,7 +78,6 @@ export async function writeTodoData(userId, todo) {
       console.log(error);
     });
 }
-
 
 export async function getTodoData() {
   const promise = databases.listDocuments(DB_ID, COLLECTION_ID);
