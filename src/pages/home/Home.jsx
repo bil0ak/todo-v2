@@ -1,69 +1,79 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  app,
+  writeTodoData,
   removeTodo,
   updateTodo,
   updateTodoStatus,
-} from "../../config/firebase-config";
-import { writeTodoData } from "../../config/firebase-config";
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+  getAccount,
+  logout,
+  getTodoData,
+  todoSubscribe,
+} from "../../config/appwrite-config";
 import "./home.css";
 
 export default function Home() {
   const [user, setUser] = useState(null);
-  const auth = getAuth();
+  // const auth = getAuth();
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        // eslint-disable-next-line no-unused-vars
-        const uid = user.uid;
-        // ...
-        setUser(user);
-      } else {
-        // User is signed out
-        // ...
-        // redirect to login page
-        window.location.href = "/login";
-      }
-    });
+    async function getUser() {
+      const promise = getAccount();
+      promise.then(
+        function (response) {
+          setUser(response);
+        },
+        function (error) {
+          window.location.href = "/login";
+        }
+      );
+    }
+    getUser();
   }, []);
 
   const [data, setData] = useState([]);
 
-  const db = getFirestore(app);
-
   useEffect(() => {
     const getData = async () => {
-      const q = query(collection(db, "users/" + user.uid + "/todos"));
-      // eslint-disable-next-line no-unused-vars
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const data = [];
-        querySnapshot.forEach((doc) => {
-          data.push({ ...doc.data(), id: doc.id });
-        });
-        // sort data by date in descending order
-        data.sort((a, b) => b.date - a.date);
-
-        setData(data);
-      });
+      const data = await getTodoData();
+      if (data.documents) {
+        setData(data.documents);
+      }
     };
     user && getData();
   }, [user]);
+
+  const getData = async () => {
+    const data = await getTodoData();
+    if (data.documents) {
+      setData(data.documents);
+    }
+  };
+
+  function subscribe() {
+    todoSubscribe((payload) => {
+      switch (payload.events[1]) {
+        case "databases.*.collections.*.documents.*.create":
+          getData();
+          break;
+        case "databases.*.collections.*.documents.*.delete":
+          getData();
+          break;
+        case "databases.*.collections.*.documents.*.update":
+          getData();
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  subscribe();
 
   const handleDeleteBtnClick = (e, id) => {
     e.preventDefault();
     let confirmation = window.confirm("Are you sure you want to delete this?");
     if (confirmation) {
-      removeTodo(user.uid, id);
+      removeTodo(id);
     }
   };
 
@@ -71,12 +81,14 @@ export default function Home() {
     e.preventDefault();
     let newTitle = window.prompt("Enter new title", title);
     if (newTitle) {
-      updateTodo(user.uid, id, newTitle);
+      updateTodo(id, {
+        title: newTitle,
+      });
     }
   };
   const handleTodoCheckboxClick = (e, id, completed) => {
     e.preventDefault();
-    updateTodoStatus(user.uid, id, !completed);
+    updateTodoStatus(id, !completed);
   };
 
   const [newTodo, setNewTodo] = useState({
@@ -99,7 +111,8 @@ export default function Home() {
       return;
     }
 
-    writeTodoData(user.uid, newTodo);
+    console.log(user);
+    writeTodoData(user.$id, newTodo);
     // empty input
     setNewTodo({
       title: "",
@@ -108,7 +121,15 @@ export default function Home() {
   };
 
   const handleSignOut = () => {
-    auth.signOut();
+    const promise = logout();
+    promise.then(
+      function (response) {
+        window.location.href = "/login";
+      },
+      function (error) {
+        console.log(error); // Failure
+      }
+    );
   };
 
   return (
@@ -116,6 +137,9 @@ export default function Home() {
       <h1>TODOS:</h1>
       <div className="row">
         <div className="left">
+          <h2 className="user_name">
+            {user && user.name} <br /> {user && user.email}
+          </h2>
           <div className="add_todo_container">
             <form>
               <input
@@ -144,11 +168,11 @@ export default function Home() {
           <ul className="todos_list">
             {data &&
               data.map((item) => (
-                <li key={item.id} className="todo_item">
+                <li key={item.$id} className="todo_item">
                   <div
                     className="todo_item_checkbox"
                     onClick={(e) =>
-                      handleTodoCheckboxClick(e, item.id, item.completed)
+                      handleTodoCheckboxClick(e, item.$id, item.completed)
                     }
                   >
                     {item.completed ? (
@@ -168,7 +192,7 @@ export default function Home() {
                   <div className="todo_item_functions">
                     <button
                       onClick={(e) =>
-                        handleUpdateBtnClick(e, item.id, item.title)
+                        handleUpdateBtnClick(e, item.$id, item.title)
                       }
                       className="todo_item_update"
                     >
@@ -176,7 +200,7 @@ export default function Home() {
                     </button>
 
                     <button
-                      onClick={(e) => handleDeleteBtnClick(e, item.id)}
+                      onClick={(e) => handleDeleteBtnClick(e, item.$id)}
                       className="todo_item_delete"
                     >
                       Delete

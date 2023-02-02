@@ -23,6 +23,12 @@
   flex-direction: column;
 }
 
+.user_name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
 .add_todo_container {
   height: fit-content;
   display: flex;
