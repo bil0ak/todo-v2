@@ -36,7 +36,7 @@ export async function logout() {
 
 export async function writeTodoData(userId, todo) {
   // eslint-disable-next-line no-unused-vars
-  let encryptedTodo = AES.encrypt(todo.title, process.env.REACT_APP_SECRET_KEY);
+  // let encryptedTodo = AES.encrypt(todo.title, process.env.REACT_APP_SECRET_KEY);
   const d = new Date();
   const promise = databases.createDocument(
     DB_ID,
