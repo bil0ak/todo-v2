@@ -1,4 +1,5 @@
 import { Account, Client, Databases, Permission, Role } from "appwrite";
+import { AES } from "crypto-js";
 
 const client = new Client();
 
@@ -34,6 +35,7 @@ export async function logout() {
 }
 
 export async function writeTodoData(userId, todo) {
+  let encryptedTodo = AES.encrypt(todo.title, process.env.REACT_APP_SECRET_KEY);
   const d = new Date();
   const promise = databases.createDocument(
     DB_ID,

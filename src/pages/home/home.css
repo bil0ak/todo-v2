@@ -158,3 +158,25 @@
   border: none;
   cursor: pointer;
 }
+
+@media screen and (max-width: 800px) {
+  .row {
+    flex-direction: column;
+  }
+  .left {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .right {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .todos_list {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0;
+  }
+}
