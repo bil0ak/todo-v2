@@ -67,7 +67,9 @@ export default function Home() {
     });
   }
 
-  subscribe();
+  useEffect(() => {
+    subscribe();
+  }, []);
 
   const handleDeleteBtnClick = (e, id) => {
     e.preventDefault();
