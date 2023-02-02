@@ -1,5 +1,5 @@
 import { Account, Client, Databases, Permission, Role } from "appwrite";
-import { AES } from "crypto-js";
+// import { AES } from "crypto-js";
 
 const client = new Client();
 
