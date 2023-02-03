@@ -34,7 +34,7 @@
 
 .magic_url_login_container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
@@ -48,9 +48,72 @@
   border: 1px solid var(--text-color);
   font-size: 1rem;
   font-weight: 400;
-  margin-bottom: 10px;
+  margin-right: 10px;
 }
 .magic_url_login_container button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid var(--text-color);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.phone_login_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  border-top: 1px solid var(--text-color);
+  padding-top: 20px;
+}
+
+.phone_login_container input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--text-color);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.phone_login_container button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid var(--text-color);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.code_verification_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* border-top: 1px solid var(--text-color); */
+  /* padding-top: 20px; */
+}
+
+.code_verification_container input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--text-color);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.code_verification_container button {
   background-color: var(--primary-color);
   color: var(--text-color);
   padding: 10px 20px;

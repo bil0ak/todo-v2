@@ -38,6 +38,16 @@ export async function magicURLLoginCallback(userId, secret) {
   return promise;
 }
 
+export async function phoneLogin(phone) {
+  const promise = account.createPhoneSession("unique()", phone);
+  return promise;
+}
+
+export async function verifyPhoneCode(userId, code) {
+  const promise = account.updatePhoneSession(userId, code);
+  return promise;
+}
+
 export async function getAccount() {
   const promise = account.get();
   return promise;
