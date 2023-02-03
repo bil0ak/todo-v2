@@ -185,7 +185,13 @@ export default function Home() {
                       <i className="fa fa-circle"></i>
                     )}
                   </div>
-                  <p className="todo_item_title">
+                  <p
+                    className={
+                      item.completed
+                        ? "todo_item_title completed"
+                        : "todo_item_title"
+                    }
+                  >
                     {item.completed ? <del>{item.title}</del> : item.title}
                   </p>
                   <p className="todo_item_date">

@@ -113,10 +113,11 @@
   padding: 10px 0;
   border-bottom: 1px solid #ccc;
 }
-.todo_item_checkbox input {
+.todo_item_checkbox i {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  font-size: 1.2rem;
 }
 .todo_item_title {
   font-size: 1.2rem;
@@ -124,6 +125,9 @@
   color: var(--text-color);
   max-width: 200px;
   word-wrap: break-word;
+}
+.todo_item_title.completed {
+  color: red;
 }
 
 .todo_item_date {
