@@ -119,6 +119,9 @@
   margin-right: 10px;
   font-size: 1.2rem;
 }
+.todo_item_checkbox i.completed {
+  color: red;
+}
 .todo_item_title {
   font-size: 1.2rem;
   font-weight: 500;
@@ -127,7 +130,9 @@
   word-wrap: break-word;
 }
 .todo_item_title.completed {
-  color: red;
+  text-decoration: line-through;
+  text-decoration-color: red;
+  text-decoration-thickness: 2px;
 }
 
 .todo_item_date {

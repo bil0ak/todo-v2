@@ -179,7 +179,7 @@ export default function Home() {
                   >
                     {item.completed ? (
                       // circle check icon
-                      <i className="fa fa-check-circle"></i>
+                      <i className="fa fa-check-circle completed"></i>
                     ) : (
                       // circle icon
                       <i className="fa fa-circle"></i>
@@ -192,7 +192,7 @@ export default function Home() {
                         : "todo_item_title"
                     }
                   >
-                    {item.completed ? <del>{item.title}</del> : item.title}
+                    {item.title}
                   </p>
                   <p className="todo_item_date">
                     {new Date(item.date).toLocaleString()}
